@@ -1,0 +1,39 @@
+---
+format_version: '8'
+default_step_lib_source: https://github.com/bitrise-io/bitrise-steplib.git
+project_type: android
+trigger_map:
+- push_branch: master
+  workflow: run-instrumented-tests
+- pull_request_source_branch: "*"
+  workflow: run-instrumented-tests
+workflows:
+  run-instrumented-tests:
+    steps:
+    - activate-ssh-key:
+        run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
+    - git-clone: {}
+    - cache-pull: {}
+    - script-runner:
+        inputs:
+        - file_path: ".bitrise/run_emulator.sh"
+        title: Start Emulator
+    - gradle-runner:
+        inputs:
+        - gradlew_path: "./gradlew"
+        - app_file_include_filter: "*.apk"
+        - app_file_exclude_filter: ''
+        - test_apk_file_include_filter: ''
+        - mapping_file_include_filter: ''
+        - gradle_task: connectedDebugAndroidTest -Dorg.gradle.daemon=false -Dkotlin.incremental=false --no-parallel
+        - cache_level: all
+        title: Run Tests
+    - cache-push: {}
+app:
+  envs:
+  - opts:
+      is_expand: false
+    CI: 'true'
+  - opts:
+      is_expand: false
+    PROJECT_LOCATION: "."
