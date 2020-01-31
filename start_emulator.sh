@@ -5,7 +5,7 @@ set -e
 set -x
 
 API_LEVEL=23
-BUILD_TOOLS_VERSION=29.0.2
+BUILD_TOOLS_VERSION=29.0.3
 
 sdkmanager "system-images;android-${API_LEVEL};google_apis;x86"
 sdkmanager "build-tools;${BUILD_TOOLS_VERSION}"
