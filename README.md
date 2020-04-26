@@ -2,6 +2,16 @@
 
 Custom [bitrise.io](https://app.bitrise.io) workflow for running instrumented tests on emulators.
 
+:warning: **Update: 2020-04-26** - there have been a few improvements in Android Testing on CI for the last few months so some of the information presented below no longer be relevant. Specifically:
+
+- many projects are migrating to **GitHub Actions** for Android CI and I created [Android Emulator Runner](https://github.com/ReactiveCircus/android-emulator-runner), a custom GitHub Action that installs, configures and runs **hardware-accelerated** Android Emulators on macOS virtual machines.
+- GitHub Actions' `macos` VMs are free for open-source projects but they are significantly more expensive than the Linux VMs for private repos. While **Android Emulator Runner** works with `ubuntu` VMs without hardware acceleration, I [don't recommand it](https://github.com/ReactiveCircus/android-emulator-runner/issues/46). Intead I'd encourage you to take a look at [Cirrus CI](https://cirrus-ci.org/) which provides **KVM-enabled** Linux VMs and pricing seems pretty reasonable (100% free for opensource projects).
+
+If you'd like to learn more about running Android instrumented tests on CI in general, I wrote a couple of articles:
+
+- [Running Android Emulators on CI - from bitrise.io to GitHub Actions](https://dev.to/ychescale9/running-android-emulators-on-ci-from-bitrise-io-to-github-actions-3j76) - I explored my journey on finding the best solution for runing Android instrumented tests on CI, expecially opensource projects. I also covered how I migrated one of my opensource libraries from **bitrise.io** (using the workflow in this repo) to the custom **Android Emulator Runner** GitHub Action.
+- [Exploring Cirrus CI for Android](https://dev.to/ychescale9/exploring-cirrus-ci-for-android-434) - A deep dive into **Cirrus CI** and all the features relevant to Android and how you can optimize your pipeline etc. I also created some [templates](https://github.com/ReactiveCircus/cirrusci-android-templates) to help you get started.
+
 ## Why do I need this?
 
 Running proper automated UI tests on CI remains a challenge especially when operating with free plans for side projects. AFAIK **Bitrise** is the only service that supports running x86 emulators natively with `-gpu swiftshader`. They offer 1 free container for open-source projects. Other solutions I've looked at:
